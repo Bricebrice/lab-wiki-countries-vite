@@ -17,6 +17,11 @@ function CountryDetails() {
         setFoundCountry(response.data);
         // console.log("response.data: ", response.data);
         setFetching(false);
+      })
+      // just to play around and test error fallback
+      .catch((err) => {
+        // console.log("Error is:", err);
+        setFetching(false);
       });
   }, [countryId]);
 
@@ -32,14 +37,19 @@ function CountryDetails() {
 
       {fetching && <p>Loading...</p>}
 
-      {!foundCountry && <p>...but, country not found!</p>}
+      {!foundCountry && <p>Country not found!</p>}
 
       {/* {!fetching && !foundCountry && <p>Country not found</p>} // idea
       is to display country not found --> might need catch error? */}
 
       {!fetching && foundCountry && (
         <div>
+          <img
+            src={`https://flagpedia.net/data/flags/icon/72x54/${foundCountry.alpha2Code.toLowerCase()}.png`}
+            alt="country flag"
+          />
           <h1>{foundCountry.name.common}</h1>
+          <br />
           <table className="table">
             <thead></thead>
             <tbody>
@@ -58,13 +68,17 @@ function CountryDetails() {
                 <td>Borders</td>
                 <td>
                   <ul>
-                    {foundCountry.borders.map((border) => (
-                      <li key={border}>
-                        <Link key={border} to={`/${border}`}>
-                          {border}
-                        </Link>
-                      </li>
-                    ))}
+                    {foundCountry.borders.map((border) => {
+                      // Brainstorming with Pool
+                      // For each border, call the endpoint for that alpha3code and retrieve the info in order to display the name of the country
+                      return (
+                        <li key={border}>
+                          <Link key={border} to={`/${border}`}>
+                            {border}
+                          </Link>
+                        </li>
+                      );
+                    })}
                   </ul>
                 </td>
               </tr>
