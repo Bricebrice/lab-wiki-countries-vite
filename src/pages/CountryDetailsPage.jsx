@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 
 import axios from "axios";
 
@@ -30,38 +30,48 @@ function CountryDetails() {
     <div className="container">
       <p style={{ fontSize: "24px", fontWeight: "bold" }}>Country Details</p>
 
-      <h1>France</h1>
       {fetching && <p>Loading...</p>}
 
-      <table className="table">
-        <thead></thead>
-        <tbody>
-          <tr>
-            <td style={{ width: "30%" }}>Capital</td>
-            <td>Paris</td>
-          </tr>
-          <tr>
-            <td>Area</td>
-            <td>
-              551695 km
-              <sup>2</sup>
-            </td>
-          </tr>
-          <tr>
-            <td>Borders</td>
-            <td>
-              <ul>
-                <li>
-                  <a href="/AND">Andorra</a>
-                </li>
-                <li>
-                  <a href="/BEL">Belgium</a>
-                </li>
-              </ul>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+      {!foundCountry && <p>...but, country not found!</p>}
+
+      {/* {!fetching && !foundCountry && <p>Country not found</p>} // idea
+      is to display country not found --> might need catch error? */}
+
+      {!fetching && foundCountry && (
+        <div>
+          <h1>{foundCountry.name.common}</h1>
+          <table className="table">
+            <thead></thead>
+            <tbody>
+              <tr>
+                <td style={{ width: "30%" }}>Capital</td>
+                <td>{foundCountry.capital}</td>
+              </tr>
+              <tr>
+                <td>Area</td>
+                <td>
+                  {foundCountry.area} km
+                  <sup>2</sup>
+                </td>
+              </tr>
+              <tr>
+                <td>Borders</td>
+                <td>
+                  <ul>
+                    {foundCountry.borders.map((border) => (
+                      <li key={border}>
+                        <Link key={border} to={`/${border}`}>
+                          {border}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }
