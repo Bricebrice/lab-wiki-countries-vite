@@ -6,6 +6,7 @@ import axios from "axios";
 function CountryDetails() {
   const [fetching, setFetching] = useState(true);
   const [foundCountry, setFoundCountry] = useState(null);
+  // Create a new state for the borderCountries
 
   const { countryId } = useParams();
   // console.log("countryId is: ", countryId);
@@ -74,6 +75,7 @@ function CountryDetails() {
                       return (
                         <li key={border}>
                           <Link key={border} to={`/${border}`}>
+                            {/* filter on the countries - parent has the countries(props) OR second call to axios */}
                             {border}
                           </Link>
                         </li>
